@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mesto</title>
+  <link rel="stylesheet" href="pages/index.css">
+</head>
+<body class="body">
+  <div class="page">
+    <header class="header">
+      <img src="images/logo.svg" alt="логотип место" class="header__logo">
+    </header>
+    <main>
+      <section class="profile">
+        <div class="profile__info">
+          <img src="images/profile.jpg" alt="аватар" class="profile__picture">
+          <div class="profile__about">
+            <div class="profile__name">
+              Жак-Ив Кусто <button class="profile__edit-btn"></button>
+            </div>
+            <p class="profile__bio">
+              Исследователь океана
+            </p>
+          </div>
+        </div>
+        <button class="profile__button">
+
+        </button>
+      </section>
+      <section class="gallery">
+        <div class="gallery__card">
+          <img src="images/gallery-image.jpg" alt="карачаевск" class="gallery__image">
+          <div class="gallery__image-info">
+            <p class="gallery__title">
+              Карачаевск
+            </p>
+            <button class="gallery__like">
+
+            </button>
+          </div>
+        </div>
+        <div class="gallery__card">
+          <img src="images/gallery-image-elbrus.png" alt="гора эльбрус" class="gallery__image">
+          <div class="gallery__image-info">
+            <p class="gallery__title">
+              Гора Эльбрус
+            </p>
+            <button class="gallery__like">
+
+            </button>
+          </div>
+        </div>
+        <div class="gallery__card">
+          <img src="images/gallery-image-dombai.png" alt="домбай" class="gallery__image">
+          <div class="gallery__image-info">
+            <p class="gallery__title">
+              Домбай
+            </p>
+            <button class="gallery__like">
+
+            </button>
+          </div>
+        </div>
+        <div class="gallery__card">
+          <img src="images/gallery-image-elbrus.png" alt="гора эльбрус" class="gallery__image">
+          <div class="gallery__image-info">
+            <p class="gallery__title">
+              Гора Эльбрус
+            </p>
+            <button class="gallery__like">
+
+            </button>
+          </div>
+        </div>
+        <div class="gallery__card">
+          <img src="images/gallery-image-dombai.png" alt="домбай" class="gallery__image">
+          <div class="gallery__image-info">
+            <p class="gallery__title">
+              Домбай
+            </p>
+            <button class="gallery__like">
+
+            </button>
+          </div>
+        </div>
+        <div class="gallery__card">
+          <img src="images/gallery-image.jpg" alt="карачаево-черкессия" class="gallery__image">
+          <div class="gallery__image-info">
+            <p class="gallery__title">
+              Карачаево-Черкессия
+            </p>
+            <button class="gallery__like">
+
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer class="footer">
+      <p class="footer__copyright">
+        © 2023 Mesto Russia
+      </p>
+    </footer>
+    <div class="popup popup_opened">
+      <div class="popup__container">
+        <p class="popup__title">
+          Редактировать профиль
+        </p>
+        <input type="text" class="popup__input" value="Жак-Ив Кусто">
+        <input type="text" class="popup__input" value="Исследователь океана">
+        <button class="popup__button">
+          Сохранить
+        </button>
+        <button class="popup__close-button">
+
+        </button>
+      </div>
+    </div>
+  </div>
+<script src="scripts/script.js"></script>
+</body>
