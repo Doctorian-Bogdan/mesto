@@ -16,8 +16,9 @@
         <div class="profile__info">
           <img src="images/profile.jpg" alt="аватар" class="profile__picture">
           <div class="profile__about">
-            <div class="profile__name">
-              Жак-Ив Кусто <button class="profile__edit-btn"></button>
+            <div class="profile__container">
+              <p class="profile__name">Жак-Ив Кусто</p>
+              <button class="profile__edit-btn"></button>
             </div>
             <p class="profile__bio">
               Исследователь океана
@@ -102,16 +103,18 @@
         © 2023 Mesto Russia
       </p>
     </footer>
-    <div class="popup popup_opened">
+    <div class="popup">
       <div class="popup__container">
         <p class="popup__title">
           Редактировать профиль
         </p>
-        <input type="text" class="popup__input" value="Жак-Ив Кусто">
-        <input type="text" class="popup__input" value="Исследователь океана">
-        <button class="popup__button">
+        <form class="popup__form">
+          <input type="text" class="popup__input" id="nameInput" value="Жак-Ив Кусто">
+          <input type="text" class="popup__input" id="jobInput" value="Исследователь океана">
+          <button class="popup__button">
           Сохранить
-        </button>
+          </button>
+        </form>
         <button class="popup__close-button">
 
         </button>

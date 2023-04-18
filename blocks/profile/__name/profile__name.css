@@ -3,6 +3,7 @@
   font-weight: 500;
   line-height: 48px;
   letter-spacing: 0;
+  margin: 0;
 }
 
 @media screen and (max-width: 720px) {
