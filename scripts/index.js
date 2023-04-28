@@ -43,10 +43,14 @@ const initialCards = [
 let cardTemplate = document.querySelector('#galleryCard').content;
 let gallery = document.querySelector('.gallery');
 
+let imageTemplate = document.querySelector('#galleryPopup').content;
+let body = document.querySelector('.body');
+
 initialCards.forEach(function (cardInfo) {
   let galleryCard = cardTemplate.cloneNode(true);
   galleryCard.querySelector('.gallery__image').src = cardInfo.link;
   galleryCard.querySelector('.gallery__image').alt = cardInfo.name;
+  galleryCard.querySelector('.gallery__image').onclick = openImage;
   galleryCard.querySelector('.gallery__title').textContent = cardInfo.name;
   gallery.append(galleryCard);
 });
@@ -74,17 +78,32 @@ function addPlace(evt, popup) {
   if (placeLinkInput.value && placeNameInput.value) {
     galleryCard.querySelector('.gallery__image').src = placeLinkInput.value;
     galleryCard.querySelector('.gallery__image').alt = placeNameInput.value;
+    galleryCard.querySelector('.gallery__image').onclick = openImage;
     galleryCard.querySelector('.gallery__title').textContent = placeNameInput.value;
     gallery.prepend(galleryCard);
   } else {
     galleryCard.querySelector('.gallery__image').src = 'https://animals.pibig.info/uploads/posts/2023-03/thumbs/1680281518_animals-pibig-info-p-kotik-prosit-zhivotnie-pinterest-1.jpg';
     galleryCard.querySelector('.gallery__image').alt = 'котик';
+    galleryCard.querySelector('.gallery__image').onclick = openImage;
     galleryCard.querySelector('.gallery__title').textContent = 'Тут пусто';
     gallery.prepend(galleryCard);
   }
   popup.classList.remove('popup_opened');
   placeNameInput.value = null;
   placeLinkInput.value = null;
+}
+
+function openImage() {
+  let imageFullscreen = imageTemplate.cloneNode(true);
+  imageFullscreen.querySelector('.gallery-popup__image').src = this.src;
+  imageFullscreen.querySelector('.gallery-popup__image').alt = this.alt;
+  imageFullscreen.querySelector('.gallery-popup__title').textContent = this.alt;
+  body.append(imageFullscreen);
+  let closeImageBtn = document.querySelector('#closeImageBtn');
+  function closeImage() {
+    document.querySelector('.gallery-popup').remove();
+  }
+  closeImageBtn.addEventListener('click', closeImage);
 }
 
 editBtn.addEventListener('click',() => openPopup(editPopup));
