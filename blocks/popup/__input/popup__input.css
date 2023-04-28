@@ -11,6 +11,10 @@
   border-right: none;
 }
 
+.popup__input::placeholder {
+  color: #C4C4C4;
+}
+
 .popup__input:focus {
   outline: none;
 }
