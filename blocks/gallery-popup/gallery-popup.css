@@ -1,6 +1,9 @@
 .gallery-popup {
   position: fixed;
   display: flex;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0.3s, opacity 0.3s linear;
   justify-content: center;
   align-items: center;
   top: 0;

@@ -37,11 +37,11 @@
               <p class="gallery__title">
 
               </p>
-              <button class="gallery__like" onclick="this.classList.toggle('gallery__like_active')">
+              <button class="gallery__like">
 
               </button>
             </div>
-            <button class="gallery__delete-btn" onclick="this.parentElement.remove()">
+            <button class="gallery__delete-btn">
 
             </button>
           </div>
@@ -76,8 +76,8 @@
           Новое место
         </p>
         <form class="popup__form" id="addPlaceForm">
-          <input type="text" class="popup__input" id="placeNameInput" placeholder="Название">
-          <input type="text" class="popup__input" id="placeLinkInput" placeholder="Ссылка на картинку">
+          <input type="text" class="popup__input" id="placeNameInput" placeholder="Название" required>
+          <input type="text" class="popup__input" id="placeLinkInput" placeholder="Ссылка на картинку" required>
           <button class="popup__button">
             Сохранить
           </button>
@@ -92,7 +92,7 @@
     <div class="gallery-popup">
       <div class="gallery-popup__container">
         <img class="gallery-popup__image">
-        <button class="popup__close-button" id="closeImageBtn">
+        <button class="popup__close-button">
 
         </button>
         <p class="gallery-popup__title">
