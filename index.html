@@ -17,83 +17,35 @@
           <img src="images/profile.jpg" alt="аватар" class="profile__picture">
           <div class="profile__about">
             <div class="profile__container">
-              <h1 class="profile__name">Жак-Ив Кусто</h1>
-              <button class="profile__edit-btn" type="button"></button>
+              <p class="profile__name">Жак-Ив Кусто</p>
+              <button class="profile__edit-btn"></button>
             </div>
-            <p class="profile__bio">Исследователь океана</p>
+            <p class="profile__bio">
+              Исследователь океана
+            </p>
           </div>
         </div>
-        <button class="profile__button" type="button">
+        <button class="profile__button">
 
         </button>
       </section>
       <section class="gallery">
-        <div class="gallery__card">
-          <img src="images/gallery-image.jpg" alt="карачаевск" class="gallery__image">
-          <div class="gallery__image-info">
-            <h2 class="gallery__title">
-              Карачаевск
-            </h2>
-            <button class="gallery__like" type="button">
+        <template id="galleryCard">
+          <div class="gallery__card">
+            <img class="gallery__image">
+            <div class="gallery__image-info">
+              <p class="gallery__title">
+
+              </p>
+              <button class="gallery__like">
+
+              </button>
+            </div>
+            <button class="gallery__delete-btn">
 
             </button>
           </div>
-        </div>
-        <div class="gallery__card">
-          <img src="images/gallery-image-elbrus.png" alt="гора эльбрус" class="gallery__image">
-          <div class="gallery__image-info">
-            <h2 class="gallery__title">
-              Гора Эльбрус
-            </h2>
-            <button class="gallery__like" type="button">
-
-            </button>
-          </div>
-        </div>
-        <div class="gallery__card">
-          <img src="images/gallery-image-dombai.png" alt="домбай" class="gallery__image">
-          <div class="gallery__image-info">
-            <h2 class="gallery__title">
-              Домбай
-            </h2>
-            <button class="gallery__like" type="button">
-
-            </button>
-          </div>
-        </div>
-        <div class="gallery__card">
-          <img src="images/gallery-image-elbrus.png" alt="гора эльбрус" class="gallery__image">
-          <div class="gallery__image-info">
-            <h2 class="gallery__title">
-              Гора Эльбрус
-            </h2>
-            <button class="gallery__like" type="button">
-
-            </button>
-          </div>
-        </div>
-        <div class="gallery__card">
-          <img src="images/gallery-image-dombai.png" alt="домбай" class="gallery__image">
-          <div class="gallery__image-info">
-            <h2 class="gallery__title">
-              Домбай
-            </h2>
-            <button class="gallery__like" type="button">
-
-            </button>
-          </div>
-        </div>
-        <div class="gallery__card">
-          <img src="images/gallery-image.jpg" alt="карачаево-черкессия" class="gallery__image">
-          <div class="gallery__image-info">
-            <h2 class="gallery__title">
-              Карачаево-Черкессия
-            </h2>
-            <button class="gallery__like" type="button">
-
-            </button>
-          </div>
-        </div>
+        </template>
       </section>
     </main>
     <footer class="footer">
@@ -101,24 +53,54 @@
         © 2023 Mesto Russia
       </p>
     </footer>
-    <div class="popup">
+    <div class="popup" id="editPopup">
       <div class="popup__container">
-        <h3 class="popup__title">
+        <p class="popup__title">
           Редактировать профиль
-        </h3>
-        <form class="popup__form" name="userInfo">
-          <input type="text" class="popup__input" id="nameInput" name="userName">
-          <input type="text" class="popup__input" id="jobInput" name="userJob">
-          <button class="popup__button" type="submit">
+        </p>
+        <form class="popup__form" id="editForm">
+          <input type="text" class="popup__input" id="nameInput" value="Жак-Ив Кусто">
+          <input type="text" class="popup__input" id="jobInput" value="Исследователь океана">
+          <button class="popup__button">
           Сохранить
           </button>
         </form>
-        <button class="popup__close-button" type="button">
+        <button class="popup__close-button" id="closeEditPopup">
+
+        </button>
+      </div>
+    </div>
+    <div class="popup" id="addPlacePopup">
+      <div class="popup__container">
+        <p class="popup__title">
+          Новое место
+        </p>
+        <form class="popup__form" id="addPlaceForm">
+          <input type="text" class="popup__input" id="placeNameInput" placeholder="Название" required>
+          <input type="text" class="popup__input" id="placeLinkInput" placeholder="Ссылка на картинку" required>
+          <button class="popup__button">
+            Сохранить
+          </button>
+        </form>
+        <button class="popup__close-button" id="closeAddPopup">
 
         </button>
       </div>
     </div>
   </div>
-<script src="scripts/index.js"></script>
+  <template id="galleryPopup">
+    <div class="gallery-popup">
+      <div class="gallery-popup__container">
+        <img class="gallery-popup__image">
+        <button class="popup__close-button">
+
+        </button>
+        <p class="gallery-popup__title">
+
+        </p>
+      </div>
+    </div>
+  </template>
+  <script src="scripts/index.js"></script>
 </body>
 </html>
