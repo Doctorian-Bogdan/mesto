@@ -1,30 +1,4 @@
-const initialCards = [
-  {
-    name: 'Архыз',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-  },
-  {
-    name: 'Челябинская область',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-  },
-  {
-    name: 'Иваново',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-  },
-  {
-    name: 'Камчатка',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-  },
-  {
-    name: 'Холмогорский район',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-  },
-  {
-    name: 'Байкал',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-  }
-];
-
+//Edit popup
 const editBtn = document.querySelector('.profile__edit-btn');
 const closeEditPopupBtn = document.querySelector('#closeEditPopup');
 const editPopup = document.querySelector('#editPopup');
@@ -34,6 +8,7 @@ const editForm = document.querySelector('#editForm');
 const nameInput = document.querySelector('#nameInput');
 const jobInput = document.querySelector('#jobInput');
 
+//Add place popup
 const addPlaceBtn = document.querySelector('.profile__button');
 const closeAddPopupBtn = document.querySelector('#closeAddPopup');
 const addPlacePopup = document.querySelector('#addPlacePopup');
@@ -41,9 +16,14 @@ const addPlaceForm = document.querySelector('#addPlaceForm');
 const placeNameInput = document.querySelector('#placeNameInput');
 const placeLinkInput = document.querySelector('#placeLinkInput');
 
-const gallery = document.querySelector('.gallery');
+//Image popup
+const imagePopup = document.querySelector('#imagePopup');
+const closeImagePopupBtn = document.querySelector('#closeImagePopup');
+const imagePopupImage = document.querySelector('.popup__image');
+const imagePopSubtitle = document.querySelector('.popup__subtitle');
 
-const body = document.querySelector('.body');
+
+const gallery = document.querySelector('.gallery');
 
 function openPopup(popup) {
   popup.classList.add('popup_opened');
@@ -53,13 +33,13 @@ function closePopup(popup) {
   popup.classList.remove('popup_opened');
 }
 
-function handleFormSubmit(evt, popup) {
+function handleProfileFormSubmit(evt, popup) {
   evt.preventDefault();
   let nameValue = nameInput.value;
   let jobValue = jobInput.value;
   profileName.textContent = nameValue;
   profileBio.textContent = jobValue;
-  popup.classList.remove('popup_opened');
+  closePopup(popup);
 }
 
 function createPlaceElement(placeInfo) {
@@ -75,6 +55,10 @@ function createPlaceElement(placeInfo) {
   placeImage.alt = placeInfo.name;
   placeTitle.textContent = placeInfo.name;
 
+  placeImage.onerror = function () {
+    placeImage.src = 'https://labrika.ru/static/upload/03/56/03569c9d99f17582dd6ae082a913fc9b.png';
+  };
+
   function handleLike() {
     placeLikeButton.classList.toggle('gallery__like_active');
   }
@@ -83,52 +67,29 @@ function createPlaceElement(placeInfo) {
     placeCard.remove();
   }
 
+  function handleModal() {
+    imagePopupImage.src = placeImage.src;
+    imagePopupImage.alt = placeImage.alt;
+    imagePopSubtitle.textContent = placeImage.alt;
+
+    openPopup(imagePopup);
+  }
+
   placeLikeButton.addEventListener('click', handleLike);
   placeDeleteButton.addEventListener('click', handleDelete);
+  placeImage.addEventListener('click', handleModal);
 
   return placeElement;
-}
-
-function createPlacePopup(placeInfo) {
-  const placePopup = document.querySelector('#galleryPopup').content.cloneNode(true);
-
-  const placeImage = placePopup.querySelector('.gallery-popup__image');
-  const placeTitle = placePopup.querySelector('.gallery-popup__title');
-
-  placeImage.src = placeInfo.link;
-  placeImage.alt = placeInfo.name;
-  placeTitle.textContent = placeInfo.name;
-
-  return placePopup;
-}
-
-function addPlaceElement(cardInfo) {
-  const element = createPlaceElement(cardInfo);
-  const popup = createPlacePopup(cardInfo);
-  const galleryPopup = popup.querySelector('.gallery-popup');
-  const image = element.querySelector('.gallery__image');
-  const closeBtn = popup.querySelector('.popup__close-button');
-  const popupImage = popup.querySelector('.gallery-popup__image');
-
-  image.onerror = function () {
-    image.src = 'https://labrika.ru/static/upload/03/56/03569c9d99f17582dd6ae082a913fc9b.png';
-    popupImage.src = 'https://labrika.ru/static/upload/03/56/03569c9d99f17582dd6ae082a913fc9b.png';
-  };
-
-  image.addEventListener('click',() => openPopup(galleryPopup));
-  closeBtn.addEventListener('click',() => closePopup(galleryPopup));
-
-  gallery.prepend(element);
-  body.append(popup);
 }
 
 function addPlace(evt, name, link) {
   evt.preventDefault();
 
-  addPlaceElement({name: name, link: link});
+  let element = createPlaceElement({name: name, link: link});
 
-  placeNameInput.value = null;
-  placeLinkInput.value = null
+  gallery.prepend(element);
+
+  addPlaceForm.reset();
 
   closePopup(addPlacePopup);
 }
@@ -141,10 +102,13 @@ function handleCloseButton(btn, closeBtn, popup) {
 handleCloseButton(editBtn, closeEditPopupBtn, editPopup);
 handleCloseButton(addPlaceBtn, closeAddPopupBtn, addPlacePopup);
 
-editForm.addEventListener('submit',(event) => handleFormSubmit(event, editPopup));
+editForm.addEventListener('submit',(event) => handleProfileFormSubmit(event, editPopup));
 addPlaceForm.addEventListener('submit',(event) => addPlace(event, placeNameInput.value, placeLinkInput.value));
 
+closeImagePopupBtn.addEventListener('click', () => closePopup(imagePopup));
+
 initialCards.forEach((cardInfo) => {
-  addPlaceElement(cardInfo);
+  let element = createPlaceElement(cardInfo);
+  gallery.append(element);
 });
 

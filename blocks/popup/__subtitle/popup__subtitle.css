@@ -1,6 +1,5 @@
-.gallery-popup__title {
+.popup__subtitle {
   position: absolute;
-  font-family: 'Inter', 'Arial', sans-serif;
   font-size: 12px;
   line-height: 15px;
   letter-spacing: 0;

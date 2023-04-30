@@ -17,15 +17,15 @@
           <img src="images/profile.jpg" alt="аватар" class="profile__picture">
           <div class="profile__about">
             <div class="profile__container">
-              <p class="profile__name">Жак-Ив Кусто</p>
-              <button class="profile__edit-btn"></button>
+              <h1 class="profile__name">Жак-Ив Кусто</h1>
+              <button class="profile__edit-btn" type="button"></button>
             </div>
             <p class="profile__bio">
               Исследователь океана
             </p>
           </div>
         </div>
-        <button class="profile__button">
+        <button class="profile__button" type="button">
 
         </button>
       </section>
@@ -34,14 +34,14 @@
           <div class="gallery__card">
             <img class="gallery__image">
             <div class="gallery__image-info">
-              <p class="gallery__title">
+              <h2 class="gallery__title">
 
-              </p>
-              <button class="gallery__like">
+              </h2>
+              <button class="gallery__like" type="button">
 
               </button>
             </div>
-            <button class="gallery__delete-btn">
+            <button class="gallery__delete-btn" type="button">
 
             </button>
           </div>
@@ -59,13 +59,13 @@
           Редактировать профиль
         </p>
         <form class="popup__form" id="editForm">
-          <input type="text" class="popup__input" id="nameInput" value="Жак-Ив Кусто">
-          <input type="text" class="popup__input" id="jobInput" value="Исследователь океана">
-          <button class="popup__button">
+          <input type="text" class="popup__input" id="nameInput" value="Жак-Ив Кусто" placeholder="Ваше имя">
+          <input type="text" class="popup__input" id="jobInput" value="Исследователь океана" placeholder="Ваш род деятельности">
+          <button class="popup__button" type="submit">
           Сохранить
           </button>
         </form>
-        <button class="popup__close-button" id="closeEditPopup">
+        <button class="popup__close-button" id="closeEditPopup" type="button">
 
         </button>
       </div>
@@ -78,29 +78,28 @@
         <form class="popup__form" id="addPlaceForm">
           <input type="text" class="popup__input" id="placeNameInput" placeholder="Название" required>
           <input type="text" class="popup__input" id="placeLinkInput" placeholder="Ссылка на картинку" required>
-          <button class="popup__button">
+          <button class="popup__button" type="submit">
             Сохранить
           </button>
         </form>
-        <button class="popup__close-button" id="closeAddPopup">
+        <button class="popup__close-button" id="closeAddPopup" type="button">
 
         </button>
       </div>
     </div>
-  </div>
-  <template id="galleryPopup">
-    <div class="gallery-popup">
-      <div class="gallery-popup__container">
-        <img class="gallery-popup__image">
-        <button class="popup__close-button">
+    <div class="popup" id="imagePopup">
+      <div class="popup__wrapper">
+        <img class="popup__image" src="#" alt="#">
+        <button class="popup__close-button" id="closeImagePopup" type="button">
 
         </button>
-        <p class="gallery-popup__title">
+        <p class="popup__subtitle">
 
         </p>
       </div>
     </div>
-  </template>
+  </div>
+  <script src="scripts/cards.js"></script>
   <script src="scripts/index.js"></script>
 </body>
 </html>
