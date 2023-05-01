@@ -35,8 +35,8 @@ function closePopup(popup) {
 
 function handleProfileFormSubmit(evt, popup) {
   evt.preventDefault();
-  let nameValue = nameInput.value;
-  let jobValue = jobInput.value;
+  const nameValue = nameInput.value;
+  const jobValue = jobInput.value;
   profileName.textContent = nameValue;
   profileBio.textContent = jobValue;
   closePopup(popup);
@@ -85,7 +85,7 @@ function createPlaceElement(placeInfo) {
 function addPlace(evt, name, link) {
   evt.preventDefault();
 
-  let element = createPlaceElement({name: name, link: link});
+  const element = createPlaceElement({name: name, link: link});
 
   gallery.prepend(element);
 
@@ -108,7 +108,7 @@ addPlaceForm.addEventListener('submit',(event) => addPlace(event, placeNameInput
 closeImagePopupBtn.addEventListener('click', () => closePopup(imagePopup));
 
 initialCards.forEach((cardInfo) => {
-  let element = createPlaceElement(cardInfo);
+  const element = createPlaceElement(cardInfo);
   gallery.append(element);
 });
 
