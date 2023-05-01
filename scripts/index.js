@@ -22,7 +22,6 @@ const closeImagePopupBtn = document.querySelector('#closeImagePopup');
 const imagePopupImage = document.querySelector('.popup__image');
 const imagePopSubtitle = document.querySelector('.popup__subtitle');
 
-
 const gallery = document.querySelector('.gallery');
 
 function openPopup(popup) {
@@ -31,6 +30,12 @@ function openPopup(popup) {
 
 function closePopup(popup) {
   popup.classList.remove('popup_opened');
+}
+
+function openEditPopup() {
+  nameInput.value = profileName.textContent;
+  jobInput.value = profileBio.textContent;
+  openPopup(editPopup);
 }
 
 function handleProfileFormSubmit(evt, popup) {
@@ -94,13 +99,11 @@ function addPlace(evt, name, link) {
   closePopup(addPlacePopup);
 }
 
-function handleCloseButton(btn, closeBtn, popup) {
-  btn.addEventListener('click',() => openPopup(popup));
-  closeBtn.addEventListener('click',() => closePopup(popup));
-}
+editBtn.addEventListener('click', openEditPopup);
+closeEditPopupBtn.addEventListener('click',() => closePopup(editPopup));
 
-handleCloseButton(editBtn, closeEditPopupBtn, editPopup);
-handleCloseButton(addPlaceBtn, closeAddPopupBtn, addPlacePopup);
+addPlaceBtn.addEventListener('click',() => openPopup(addPlacePopup));
+closeAddPopupBtn.addEventListener('click',() => closePopup(addPlacePopup));
 
 editForm.addEventListener('submit',(event) => handleProfileFormSubmit(event, editPopup));
 addPlaceForm.addEventListener('submit',(event) => addPlace(event, placeNameInput.value, placeLinkInput.value));
