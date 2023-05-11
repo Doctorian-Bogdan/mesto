@@ -57,8 +57,10 @@
           Редактировать профиль
         </h2>
         <form class="popup__form" id="editForm">
-          <input type="text" class="popup__input" id="nameInput" value="Жак-Ив Кусто" placeholder="Ваше имя">
-          <input type="text" class="popup__input" id="jobInput" value="Исследователь океана" placeholder="Ваш род деятельности">
+          <input type="text" class="popup__input" id="nameInput" value="Жак-Ив Кусто" placeholder="Ваше имя" minlength="2" maxlength="40" required>
+          <span class="popup__error nameInput-error"></span>
+          <input type="text" class="popup__input" id="jobInput" value="Исследователь океана" placeholder="Ваш род деятельности" minlength="2" maxlength="200" required>
+          <span class="popup__error jobInput-error"></span>
           <button class="popup__button" type="submit">
           Сохранить
           </button>
@@ -74,8 +76,10 @@
           Новое место
         </h2>
         <form class="popup__form" id="addPlaceForm">
-          <input type="text" class="popup__input" id="placeNameInput" placeholder="Название" required>
-          <input type="text" class="popup__input" id="placeLinkInput" placeholder="Ссылка на картинку" required>
+          <input type="text" class="popup__input" id="placeNameInput" placeholder="Название" minlength="2" maxlength="30" required>
+          <span class="popup__error placeNameInput-error"></span>
+          <input type="url" class="popup__input" id="placeLinkInput" placeholder="Ссылка на картинку" required>
+          <span class="popup__error placeLinkInput-error"></span>
           <button class="popup__button" type="submit">
             Сохранить
           </button>
@@ -97,7 +101,9 @@
       </div>
     </div>
   </div>
+
   <script src="scripts/cards.js"></script>
   <script src="scripts/index.js"></script>
+  <script src="scripts/validate.js"></script>
 </body>
 </html>
