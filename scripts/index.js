@@ -99,10 +99,19 @@ function addPlace(evt, name, link) {
   closePopup(addPlacePopup);
 }
 
-function popupSetEventListeners () {
+function documentSetEventListeners () {
   document.addEventListener('keydown', (evt) => {
     const popup = document.querySelector('.popup_opened');
+
     if (evt.key === 'Escape' && popup) {
+      closePopup(popup);
+    }
+  })
+
+  document.addEventListener('mousedown', (evt) => {
+    const popup = document.querySelector('.popup_opened');
+
+    if (evt.target.className === 'popup popup_opened') {
       closePopup(popup);
     }
   })
@@ -124,4 +133,4 @@ initialCards.forEach((cardInfo) => {
   gallery.append(element);
 });
 
-popupSetEventListeners()
+documentSetEventListeners()
