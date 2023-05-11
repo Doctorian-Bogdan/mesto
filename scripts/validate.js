@@ -1,6 +1,6 @@
 function showInputError (formElement, inputElement, errorMessage, inputErrorClass, errorClass) {
   const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
-  console.log(`.${inputElement.id}-error`)
+
   inputElement.classList.add(inputErrorClass);
   errorElement.textContent = errorMessage;
   errorElement.classList.add(errorClass);
@@ -44,7 +44,7 @@ function setEventListeners(formElement, validateObj) {
 
   inputList.forEach((inputElement) => {
     checkInputValidity(formElement, inputElement, validateObj.inputErrorClass, validateObj.errorClass);
-    
+
     inputElement.addEventListener('input', () => {
       checkInputValidity(formElement, inputElement, validateObj.inputErrorClass, validateObj.errorClass);
       toggleButtonState(inputList, buttonElement, validateObj.inactiveButtonClass);

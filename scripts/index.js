@@ -99,6 +99,15 @@ function addPlace(evt, name, link) {
   closePopup(addPlacePopup);
 }
 
+function popupSetEventListeners () {
+  document.addEventListener('keydown', (evt) => {
+    const popup = document.querySelector('.popup_opened');
+    if (evt.key === 'Escape' && popup) {
+      closePopup(popup);
+    }
+  })
+}
+
 editBtn.addEventListener('click', openEditPopup);
 closeEditPopupBtn.addEventListener('click',() => closePopup(editPopup));
 
@@ -115,3 +124,4 @@ initialCards.forEach((cardInfo) => {
   gallery.append(element);
 });
 
+popupSetEventListeners()
