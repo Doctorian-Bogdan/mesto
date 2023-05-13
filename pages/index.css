@@ -49,4 +49,5 @@
 @import url("../blocks/popup/__button/_disabled/popup__button_disabled.css");
 @import url("../blocks/popup/__close-button/popup__close-button.css");
 @import url("../blocks/popup/_opened/popup_opened.css");
+@import url("../blocks/popup/_bg/popup_bg_darker.css");
 

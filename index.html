@@ -56,7 +56,7 @@
         <h2 class="popup__title">
           Редактировать профиль
         </h2>
-        <form class="popup__form" id="editForm">
+        <form class="popup__form" id="editForm" novalidate>
           <input type="text" class="popup__input" id="nameInput" value="Жак-Ив Кусто" placeholder="Ваше имя" minlength="2" maxlength="40" required>
           <span class="popup__error nameInput-error"></span>
           <input type="text" class="popup__input" id="jobInput" value="Исследователь океана" placeholder="Ваш род деятельности" minlength="2" maxlength="200" required>
@@ -75,7 +75,7 @@
         <h2 class="popup__title">
           Новое место
         </h2>
-        <form class="popup__form" id="addPlaceForm">
+        <form class="popup__form" id="addPlaceForm" novalidate>
           <input type="text" class="popup__input" id="placeNameInput" placeholder="Название" minlength="2" maxlength="30" required>
           <span class="popup__error placeNameInput-error"></span>
           <input type="url" class="popup__input" id="placeLinkInput" placeholder="Ссылка на картинку" required>
@@ -89,7 +89,7 @@
         </button>
       </div>
     </div>
-    <div class="popup" id="imagePopup">
+    <div class="popup popup_bg_darker" id="imagePopup">
       <div class="popup__wrapper">
         <img class="popup__image" src="#" alt="#">
         <button class="popup__close-button" id="closeImagePopup" type="button">
