@@ -1,41 +1,51 @@
 //Edit popup
-const editBtn = document.querySelector('.profile__edit-btn');
-const closeEditPopupBtn = document.querySelector('#closeEditPopup');
-const editPopup = document.querySelector('#editPopup');
+const btnEdit = document.querySelector('.profile__edit-btn');
+const btnCloseEditPopup = document.querySelector('#closeEditPopup');
+const popupEdit = document.querySelector('#editPopup');
 const profileName = document.querySelector('.profile__name');
 const profileBio = document.querySelector('.profile__bio');
-const editForm = document.querySelector('#editForm');
+const formEdit = document.querySelector('#editForm');
 const nameInput = document.querySelector('#nameInput');
 const jobInput = document.querySelector('#jobInput');
 
 //Add place popup
-const addPlaceBtn = document.querySelector('.profile__button');
-const closeAddPopupBtn = document.querySelector('#closeAddPopup');
-const addPlacePopup = document.querySelector('#addPlacePopup');
-const addPlaceForm = document.querySelector('#addPlaceForm');
+const btnAddPlace = document.querySelector('.profile__button');
+const btnCloseAddPopup = document.querySelector('#closeAddPopup');
+const PopupAddPlace = document.querySelector('#addPlacePopup');
+const formAddPlace = document.querySelector('#addPlaceForm');
 const placeNameInput = document.querySelector('#placeNameInput');
 const placeLinkInput = document.querySelector('#placeLinkInput');
 
 //Image popup
 const imagePopup = document.querySelector('#imagePopup');
-const closeImagePopupBtn = document.querySelector('#closeImagePopup');
+const btnCloseImagePopup = document.querySelector('#closeImagePopup');
 const imagePopupImage = document.querySelector('.popup__image');
 const imagePopSubtitle = document.querySelector('.popup__subtitle');
 
-const gallery = document.querySelector('.gallery');
+const galleryElement = document.querySelector('.gallery');
+const popupList = Array.from(document.querySelectorAll('.popup'));
+
+function closeByEsc(evt) {
+  if (evt.key === 'Escape') {
+    const openedPopup = document.querySelector('.popup_opened');
+    closePopup(openedPopup);
+  }
+}
 
 function openPopup(popup) {
   popup.classList.add('popup_opened');
+  document.addEventListener('keydown', closeByEsc);
 }
 
 function closePopup(popup) {
   popup.classList.remove('popup_opened');
+  document.removeEventListener('keydown', closeByEsc);
 }
 
 function openEditPopup() {
   nameInput.value = profileName.textContent;
   jobInput.value = profileBio.textContent;
-  openPopup(editPopup);
+  openPopup(popupEdit);
 }
 
 function handleProfileFormSubmit(evt, popup) {
@@ -92,45 +102,34 @@ function addPlace(evt, name, link) {
 
   const element = createPlaceElement({name: name, link: link});
 
-  gallery.prepend(element);
+  galleryElement.prepend(element);
 
-  addPlaceForm.reset();
+  formAddPlace.reset();
 
-  closePopup(addPlacePopup);
+  closePopup(PopupAddPlace);
 }
 
-function documentSetEventListeners () {
-  document.addEventListener('keydown', (evt) => {
-    const popup = document.querySelector('.popup_opened');
+btnEdit.addEventListener('click', openEditPopup);
+btnCloseEditPopup.addEventListener('click',() => closePopup(popupEdit));
 
-    if (evt.key === 'Escape' && popup) {
-      closePopup(popup);
-    }
-  })
+btnAddPlace.addEventListener('click',() => openPopup(PopupAddPlace));
+btnCloseAddPopup.addEventListener('click',() => closePopup(PopupAddPlace));
 
-  document.addEventListener('mousedown', (evt) => {
-    const popup = document.querySelector('.popup_opened');
+formEdit.addEventListener('submit',(event) => handleProfileFormSubmit(event, popupEdit));
+formAddPlace.addEventListener('submit',(event) => addPlace(event, placeNameInput.value, placeLinkInput.value));
 
-    if (evt.target.className === 'popup popup_opened') {
-      closePopup(popup);
-    }
-  })
-}
-
-editBtn.addEventListener('click', openEditPopup);
-closeEditPopupBtn.addEventListener('click',() => closePopup(editPopup));
-
-addPlaceBtn.addEventListener('click',() => openPopup(addPlacePopup));
-closeAddPopupBtn.addEventListener('click',() => closePopup(addPlacePopup));
-
-editForm.addEventListener('submit',(event) => handleProfileFormSubmit(event, editPopup));
-addPlaceForm.addEventListener('submit',(event) => addPlace(event, placeNameInput.value, placeLinkInput.value));
-
-closeImagePopupBtn.addEventListener('click', () => closePopup(imagePopup));
+btnCloseImagePopup.addEventListener('click', () => closePopup(imagePopup));
 
 initialCards.forEach((cardInfo) => {
   const element = createPlaceElement(cardInfo);
-  gallery.append(element);
+  galleryElement.append(element);
 });
 
-documentSetEventListeners()
+popupList.forEach((popup) => {
+  popup.addEventListener('mousedown', (evt) => {
+    if (evt.target.className.includes('popup_opened')) {
+      const openedPopup = document.querySelector('.popup_opened');
+      closePopup(openedPopup);
+    }
+  })
+})
