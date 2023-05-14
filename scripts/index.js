@@ -128,8 +128,7 @@ initialCards.forEach((cardInfo) => {
 popupList.forEach((popup) => {
   popup.addEventListener('mousedown', (evt) => {
     if (evt.target.className.includes('popup_opened')) {
-      const openedPopup = document.querySelector('.popup_opened');
-      closePopup(openedPopup);
+      closePopup(evt.target);
     }
   })
 })
