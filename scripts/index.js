@@ -29,6 +29,15 @@ const imagePopSubtitle = document.querySelector('.popup__subtitle');
 const galleryElement = document.querySelector('.gallery');
 const popupList = Array.from(document.querySelectorAll('.popup'));
 
+const validationConfig = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__button',
+  inactiveButtonClass: 'popup__button_disabled',
+  inputErrorClass: 'popup__input_error',
+  errorClass: 'popup__error_visible'
+};
+
 function closeByEsc(evt) {
   if (evt.key === 'Escape') {
     const openedPopup = document.querySelector('.popup_opened');
@@ -69,20 +78,6 @@ function checkImgError(element) {
   };
 }
 
-function addPlace(evt, name, link) {
-  evt.preventDefault();
-
-  const element = new Card({name: name, link: link}, '#galleryCard', handleModal).createCard();
-
-  checkImgError(element);
-
-  galleryElement.prepend(element);
-
-  formAddPlace.reset();
-
-  closePopup(PopupAddPlace);
-}
-
 function handleModal(placeImage) {
   imagePopupImage.src = placeImage.src;
   imagePopupImage.alt = placeImage.alt;
@@ -100,6 +95,24 @@ function enableValidation(validateObj) {
   })
 }
 
+function createCard(cardInfo, cardSelector, handleModal) {
+  return new Card(cardInfo, cardSelector, handleModal).createCard();
+}
+
+function addPlace(evt, name, link) {
+  evt.preventDefault();
+
+  const element = createCard({name, link}, '#galleryCard', handleModal);
+
+  checkImgError(element);
+
+  galleryElement.prepend(element);
+
+  formAddPlace.reset();
+
+  closePopup(PopupAddPlace);
+}
+
 btnEdit.addEventListener('click', openEditPopup);
 btnCloseEditPopup.addEventListener('click',() => closePopup(popupEdit));
 
@@ -112,8 +125,8 @@ formAddPlace.addEventListener('submit',(event) => addPlace(event, placeNameInput
 btnCloseImagePopup.addEventListener('click', () => closePopup(imagePopup));
 
 initialCards.forEach((cardInfo) => {
-  const element = new Card(cardInfo, '#galleryCard', handleModal).createCard();
-  
+  const element = createCard(cardInfo, '#galleryCard', handleModal);
+
   checkImgError(element);
 
   galleryElement.append(element);
@@ -127,11 +140,4 @@ popupList.forEach((popup) => {
   })
 })
 
-enableValidation({
-  formSelector: '.popup__form',
-  inputSelector: '.popup__input',
-  submitButtonSelector: '.popup__button',
-  inactiveButtonClass: 'popup__button_disabled',
-  inputErrorClass: 'popup__input_error',
-  errorClass: 'popup__error_visible'
-});
+enableValidation(validationConfig);

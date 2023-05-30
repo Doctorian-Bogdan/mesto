@@ -6,8 +6,11 @@ export default class Card {
     this._handleModal = handleModal;
   }
 
-  _setElements() {
+  _getCardTemplate() {
     this._element = document.querySelector(this._cardSelector).content.cloneNode(true);
+  }
+
+  _getElements() {
     this._elementCard = this._element.querySelector('.gallery__card');
     this._elementImage = this._element.querySelector('.gallery__image');
     this._elementTitle = this._element.querySelector('.gallery__title');
@@ -19,10 +22,6 @@ export default class Card {
     this._elementImage.src = this._link;
     this._elementImage.alt = this._name;
     this._elementTitle.textContent = this._name;
-
-    // this._elementImage.onerror = function() {
-    //   this._elementImage.src = 'https://labrika.ru/static/upload/03/56/03569c9d99f17582dd6ae082a913fc9b.png';
-    // };
   }
 
   _handleLike() {
@@ -40,7 +39,8 @@ export default class Card {
   }
 
   createCard() {
-    this._setElements();
+    this._getCardTemplate();
+    this._getElements();
     this._fillCard();
     this._setEventListeners();
 
