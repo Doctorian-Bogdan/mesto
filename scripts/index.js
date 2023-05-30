@@ -1,3 +1,7 @@
+import Card from './Card.js';
+import FormValidator from "./FormValidator.js";
+import {initialCards} from './cards.js';
+
 //Edit popup
 const btnEdit = document.querySelector('.profile__edit-btn');
 const btnCloseEditPopup = document.querySelector('#closeEditPopup');
@@ -57,56 +61,43 @@ function handleProfileFormSubmit(evt, popup) {
   closePopup(popup);
 }
 
-function createPlaceElement(placeInfo) {
-  const placeElement = document.querySelector('#galleryCard').content.cloneNode(true);
+function checkImgError(element) {
+  const elementImage = element.querySelector('.gallery__image');
 
-  const placeCard = placeElement.querySelector('.gallery__card');
-  const placeImage = placeElement.querySelector('.gallery__image');
-  const placeTitle = placeElement.querySelector('.gallery__title');
-  const placeLikeButton = placeElement.querySelector('.gallery__like');
-  const placeDeleteButton = placeElement.querySelector('.gallery__delete-btn');
-
-  placeImage.src = placeInfo.link;
-  placeImage.alt = placeInfo.name;
-  placeTitle.textContent = placeInfo.name;
-
-  placeImage.onerror = function () {
-    placeImage.src = 'https://labrika.ru/static/upload/03/56/03569c9d99f17582dd6ae082a913fc9b.png';
+  elementImage.onerror = function () {
+    elementImage.src = 'https://labrika.ru/static/upload/03/56/03569c9d99f17582dd6ae082a913fc9b.png';
   };
-
-  function handleLike() {
-    placeLikeButton.classList.toggle('gallery__like_active');
-  }
-
-  function handleDelete() {
-    placeCard.remove();
-  }
-
-  function handleModal() {
-    imagePopupImage.src = placeImage.src;
-    imagePopupImage.alt = placeImage.alt;
-    imagePopSubtitle.textContent = placeImage.alt;
-
-    openPopup(imagePopup);
-  }
-
-  placeLikeButton.addEventListener('click', handleLike);
-  placeDeleteButton.addEventListener('click', handleDelete);
-  placeImage.addEventListener('click', handleModal);
-
-  return placeElement;
 }
 
 function addPlace(evt, name, link) {
   evt.preventDefault();
 
-  const element = createPlaceElement({name: name, link: link});
+  const element = new Card({name: name, link: link}, '#galleryCard', handleModal).createCard();
+
+  checkImgError(element);
 
   galleryElement.prepend(element);
 
   formAddPlace.reset();
 
   closePopup(PopupAddPlace);
+}
+
+function handleModal(placeImage) {
+  imagePopupImage.src = placeImage.src;
+  imagePopupImage.alt = placeImage.alt;
+  imagePopSubtitle.textContent = placeImage.alt;
+
+  openPopup(imagePopup);
+}
+
+function enableValidation(validateObj) {
+  const formsList = Array.from(document.querySelectorAll(validateObj.formSelector));
+
+  formsList.forEach((formElement) => {
+    const validateForm = new FormValidator(validateObj, formElement);
+    validateForm.enableValidation();
+  })
 }
 
 btnEdit.addEventListener('click', openEditPopup);
@@ -121,7 +112,10 @@ formAddPlace.addEventListener('submit',(event) => addPlace(event, placeNameInput
 btnCloseImagePopup.addEventListener('click', () => closePopup(imagePopup));
 
 initialCards.forEach((cardInfo) => {
-  const element = createPlaceElement(cardInfo);
+  const element = new Card(cardInfo, '#galleryCard', handleModal).createCard();
+  
+  checkImgError(element);
+
   galleryElement.append(element);
 });
 
@@ -132,3 +126,12 @@ popupList.forEach((popup) => {
     }
   })
 })
+
+enableValidation({
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__button',
+  inactiveButtonClass: 'popup__button_disabled',
+  inputErrorClass: 'popup__input_error',
+  errorClass: 'popup__error_visible'
+});
