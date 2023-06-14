@@ -1,9 +1,9 @@
 export default class Card {
-  constructor(cardData, cardSelector, handleModal) {
+  constructor(cardData, cardSelector, handleCardClick) {
     this._name = cardData.name;
     this._link = cardData.link;
     this._cardSelector = cardSelector;
-    this._handleModal = handleModal;
+    this._handleCardClick = handleCardClick;
   }
 
   _getCardTemplate() {
@@ -35,7 +35,7 @@ export default class Card {
   _setEventListeners() {
     this._elementLikeButton.addEventListener('click', () => this._handleLike())
     this._elementDeleteButton.addEventListener('click', () => this._handleDelete())
-    this._elementImage.addEventListener('click', () => this._handleModal(this._elementImage))
+    this._elementImage.addEventListener('click', () => this._handleCardClick(this._elementImage))
   }
 
   createCard() {
