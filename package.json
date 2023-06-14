@@ -4,7 +4,8 @@
   "description": "Проект галерея в котором можно увидеть уйму интересных мест в России",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "webpack",
+    "dev": ""
   },
   "repository": {
     "type": "git",
