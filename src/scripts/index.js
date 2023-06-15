@@ -6,6 +6,7 @@ import PopupWithForm from "./PopupWithForm.js";
 import UserInfo from "./UserInfo.js";
 import Section from "./Section.js";
 import {initialCards} from './cards.js';
+import '../pages/index.css';
 
 //Edit popup
 const popupEdit = '#editPopup';
@@ -22,7 +23,7 @@ const btnCloseAddPopup = document.querySelector('#closeAddPopup');
 //Image popup
 const imagePopup = '#imagePopup';
 
-const galleryElement = document.querySelector('.gallery');
+const galleryElement = '.gallery';
 
 const popupList = [popupEdit, popupAddPlace, imagePopup];
 
@@ -41,7 +42,7 @@ const gallery = new Section({items: initialCards, renderer: (cardInfo) => {
     checkImgError(element);
 
     gallery.addItem(element);
-  }},'.gallery');
+  }},galleryElement);
 
 gallery.renderItems();
 
