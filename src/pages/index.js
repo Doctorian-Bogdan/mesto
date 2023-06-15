@@ -1,12 +1,12 @@
-import Card from './Card.js';
-import FormValidator from './FormValidator.js';
-import Popup from './Popup.js';
-import PopupWithImage from "./PopupWithImage.js";
-import PopupWithForm from "./PopupWithForm.js";
-import UserInfo from "./UserInfo.js";
-import Section from "./Section.js";
-import {initialCards} from './cards.js';
-import '../pages/index.css';
+import Card from '../components/Card.js';
+import FormValidator from '../components/FormValidator.js';
+import Popup from '../components/Popup.js';
+import PopupWithImage from "../components/PopupWithImage.js";
+import PopupWithForm from "../components/PopupWithForm.js";
+import UserInfo from "../components/UserInfo.js";
+import Section from "../components/Section.js";
+import {initialCards} from '../utils/cards.js';
+import './index.css';
 
 //Edit popup
 const popupEdit = '#editPopup';
@@ -35,6 +35,8 @@ const validationConfig = {
   inputErrorClass: 'popup__input_error',
   errorClass: 'popup__error_visible'
 };
+
+const validatingForms = {};
 
 const gallery = new Section({items: initialCards, renderer: (cardInfo) => {
     const element = createCard(cardInfo, '#galleryCard', handleCardClick);
@@ -94,20 +96,28 @@ function enableValidation(validateObj) {
   formsList.forEach((formElement) => {
     const validateForm = new FormValidator(validateObj, formElement);
     validateForm.enableValidation();
+    validatingForms[formElement.id] = validateForm;
   })
 }
 
 enableValidation(validationConfig);
 
 btnEdit.addEventListener('click', () => {
+  validatingForms.editForm.resetErrors();
+
   editPopupElement.open();
 
   const user = userInfo.getUserInfo();
   nameInput.value = user.name;
   bioInput.value = user.bio;
 });
+
 btnCloseEditPopup.addEventListener('click',() => editPopupElement.close());
-btnAddPlace.addEventListener('click',() => addPlacePopupElement.open());
+btnAddPlace.addEventListener('click',() => {
+  validatingForms.addPlaceForm.resetErrors();
+
+  addPlacePopupElement.open();
+});
 btnCloseAddPopup.addEventListener('click',() => addPlacePopupElement.close());
 
 popupList.forEach((popup) => {
