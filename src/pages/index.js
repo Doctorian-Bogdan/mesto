@@ -71,9 +71,9 @@ function checkImgError(element) {
     elementImage.src = 'https://labrika.ru/static/upload/03/56/03569c9d99f17582dd6ae082a913fc9b.png';
   };
 }
-
-function handleCardClick(placeImage) {
-  new PopupWithImage(imagePopup, placeImage).open();
+const imageP = new PopupWithImage(imagePopup);
+function handleCardClick(name, link) {
+  imageP.open(name, link);
 }
 
 const addPlacePopupElement = new PopupWithForm(
@@ -111,7 +111,6 @@ btnEdit.addEventListener('click', () => {
   nameInput.value = user.name;
   bioInput.value = user.bio;
 });
-
 btnCloseEditPopup.addEventListener('click',() => editPopupElement.close());
 btnAddPlace.addEventListener('click',() => {
   validatingForms.addPlaceForm.resetErrors();
