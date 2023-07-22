@@ -5,6 +5,7 @@ import PopupWithImage from "../components/PopupWithImage.js";
 import PopupWithForm from "../components/PopupWithForm.js";
 import UserInfo from "../components/UserInfo.js";
 import Section from "../components/Section.js";
+import Api from "../components/Api.js"
 import {initialCards} from '../utils/cards.js';
 import './index.css';
 
@@ -22,6 +23,7 @@ const btnCloseAddPopup = document.querySelector('#closeAddPopup');
 
 //Image popup
 const imagePopup = '#imagePopup';
+const imagePopupElement = new PopupWithImage(imagePopup);
 
 const galleryElement = '.gallery';
 
@@ -38,8 +40,18 @@ const validationConfig = {
 
 const validatingForms = {};
 
-const gallery = new Section({items: initialCards, renderer: (cardInfo) => {
-    const element = createCard(cardInfo, '#galleryCard', handleCardClick);
+const api = new Api({
+  baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-71',
+  headers: {
+    authorization: '82d0ccab-52ba-4557-bc20-c656d282efa0',
+    'Content-Type': 'application/json'
+  }
+});
+
+const userId = await api.getUserInfo().then((res) => {return res._id});
+
+const gallery = new Section({items: await api.getInitialCards().then((res) => {return res}), renderer: (cardInfo) => {
+    const element = createCard(cardInfo, userId, '#galleryCard', handleCardClick);
 
     checkImgError(element);
 
@@ -50,36 +62,45 @@ gallery.renderItems();
 
 const userInfo = new UserInfo('.profile__name', '.profile__bio');
 
+api.getUserInfo().then((res) => userInfo.setUserInfo(res.name, res.about))
+
 const editPopupElement = new PopupWithForm(
   popupEdit,
   (inputs) => {
-    userInfo.setUserInfo(inputs.name, inputs.bio)
+    api.editUserInfo(inputs.name, inputs.bio).then((res) => {
+      userInfo.setUserInfo(res.name, res.about)
+    })
     editPopupElement.close();
   }
 );
 
 editPopupElement.setEventListeners();
 
-function createCard(cardInfo, cardSelector, handleCardClick) {
-  return new Card(cardInfo, cardSelector, handleCardClick).createCard();
+function createCard(cardInfo, userId, cardSelector, handleCardClick) {
+  return new Card(cardInfo, userId, cardSelector, handleCardClick).createCard();
 }
 
 function checkImgError(element) {
+
   const elementImage = element.querySelector('.gallery__image');
 
   elementImage.onerror = function () {
     elementImage.src = 'https://labrika.ru/static/upload/03/56/03569c9d99f17582dd6ae082a913fc9b.png';
   };
 }
-const imageP = new PopupWithImage(imagePopup);
+
 function handleCardClick(name, link) {
-  imageP.open(name, link);
+  imagePopupElement.open(name, link);
 }
 
 const addPlacePopupElement = new PopupWithForm(
   popupAddPlace,
-  (inputs) => {
-    const element = createCard({name: inputs.name, link: inputs.link}, '#galleryCard', handleCardClick);
+  async (inputs) => {
+    let element;
+
+    await api.addNewCard(inputs.name, inputs.link).then((res) => {
+      element = createCard({name: res.name, link: res.link, likes: res.likes}, '#galleryCard', handleCardClick);
+    })
 
     checkImgError(element);
     gallery.addItem(element);
@@ -122,3 +143,13 @@ btnCloseAddPopup.addEventListener('click',() => addPlacePopupElement.close());
 popupList.forEach((popup) => {
   new Popup(popup).setEventListeners()
 });
+
+// const api = new Api({
+//   baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-71',
+//   headers: {
+//     authorization: '82d0ccab-52ba-4557-bc20-c656d282efa0',
+//     'Content-Type': 'application/json'
+//   }
+// });
+
+// await api.getInitialCards().then((res) => {return res})
