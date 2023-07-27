@@ -13,7 +13,10 @@
     <main>
       <section class="profile">
         <div class="profile__info">
-          <img src="<%=require('./images/profile.jpg')%>" alt="аватар" class="profile__picture">
+          <div class="profile__picture-container">
+            <img src="<%=require('./images/profile.jpg')%>" alt="аватар" class="profile__picture">
+            <div class="profile__picture-overlay"></div>
+          </div>
           <div class="profile__about">
             <div class="profile__container">
               <h1 class="profile__name">Жак-Ив Кусто</h1>
@@ -102,6 +105,36 @@
         <p class="popup__subtitle">
 
         </p>
+      </div>
+    </div>
+    <div class="popup" id="deletePopup">
+      <div class="popup__container">
+        <h2 class="popup__title">
+          Вы уверены?
+        </h2>
+        <button class="popup__button" type="button">
+          Да
+        </button>
+        <button class="popup__close-button" id="closeDeletePopup" type="button">
+
+        </button>
+      </div>
+    </div>
+    <div class="popup" id="profilePopup">
+      <div class="popup__container">
+        <h2 class="popup__title">
+          Обновить аватар
+        </h2>
+        <form class="popup__form" id="profileForm" novalidate>
+          <input type="url" class="popup__input" id="profileLinkInput" name="link" placeholder="Ссылка на картинку" required>
+          <span class="popup__error profileLinkInput-error"></span>
+          <button class="popup__button" type="submit">
+            Сохранить
+          </button>
+        </form>
+        <button class="popup__close-button" id="closeProfilePopup" type="button">
+
+        </button>
       </div>
     </div>
   </div>
