@@ -1,6 +1,5 @@
 import Card from '../components/Card.js';
 import FormValidator from '../components/FormValidator.js';
-import Popup from '../components/Popup.js';
 import PopupWithImage from "../components/PopupWithImage.js";
 import PopupWithForm from "../components/PopupWithForm.js";
 import UserInfo from "../components/UserInfo.js";
@@ -8,43 +7,25 @@ import Section from "../components/Section.js";
 import Api from "../components/Api.js"
 import './index.css';
 import PopupWithDelete from "../components/PopupWithDelete.js";
+import { validationConfig, popupAddPlace, popupEdit, deletePopup, imagePopup, profilePopup, galleryElement } from "../utils/constants.js"
 
 //Edit popup
-const popupEdit = '#editPopup';
 const btnEdit = document.querySelector('.profile__edit-btn');
 const btnCloseEditPopup = document.querySelector('#closeEditPopup');
 const nameInput = document.querySelector('#nameInput');
 const bioInput = document.querySelector('#bioInput');
 
 //Add place popup
-const popupAddPlace = '#addPlacePopup';
 const btnAddPlace = document.querySelector('.profile__button');
 const btnCloseAddPopup = document.querySelector('#closeAddPopup');
 
 //Image popup
-const imagePopup = '#imagePopup';
 const imagePopupElement = new PopupWithImage(imagePopup);
-
-//Delete popup
-const deletePopup = '#deletePopup';
+imagePopupElement.setEventListeners()
 
 //Profile popup
-const profilePopup = '#profilePopup'
 const btnOpenProfile = document.querySelector('.profile__picture-overlay');
 const btnCloseProfilePopup = document.querySelector('#closeProfilePopup');
-
-const galleryElement = '.gallery';
-
-const popupList = [popupEdit, popupAddPlace, imagePopup, deletePopup, profilePopup];
-
-const validationConfig = {
-  formSelector: '.popup__form',
-  inputSelector: '.popup__input',
-  submitButtonSelector: '.popup__button',
-  inactiveButtonClass: 'popup__button_disabled',
-  inputErrorClass: 'popup__input_error',
-  errorClass: 'popup__error_visible'
-};
 
 const validatingForms = {};
 
@@ -56,40 +37,81 @@ const api = new Api({
   }
 });
 
-const userId = await api.getUserInfo().then((res) => {return res._id});
+let userId
 
-const gallery = new Section({items: await api.getInitialCards().then((res) => {return res}), renderer: (cardInfo) => {
-    const element = createCard(cardInfo, userId, '#galleryCard', handleCardClick, handleCardDelete, handleLikeAdd, handleLikeDelete);
+let gallery
+
+const userInfo = new UserInfo('.profile__name', '.profile__bio', '.profile__picture');
+
+function createCard(cardInfo) {
+  const cardElement = new Card(cardInfo, userId, '#galleryCard', handleCardClick,
+    (id) => {
+      deletePopupElement.open()
+      deletePopupElement.setSubmit(() => {
+        api.deleteCard(id)
+          .then(() => {
+            deletePopupElement.close();
+            cardElement.removeCard();
+          })
+          .catch((err) => {
+            console.log(`Ошибка ${err}`)
+          })
+      })
+    },
+    (id) => {
+      if(cardElement.isCardLiked()) {
+        api.deleteLike(id)
+          .then((res) => {
+            cardElement.handleLike(res.likes)
+          })
+          .catch((err) => {
+            console.log(`Ошибка ${err}`)
+          })
+      } else {
+        api.setLike(id)
+          .then((res) => {
+            cardElement.handleLike(res.likes)
+          })
+          .catch((err) => {
+            console.log(`Ошибка ${err}`)
+          })
+      }
+    })
+  return cardElement.createCard()
+}
+
+Promise.all([api.getUserInfo(), api.getInitialCards()])
+  .then(([userData, cards]) => {
+    userInfo.setUserInfo(userData.name, userData.about);
+    userInfo.setUserAvatar(userData.avatar);
+    userId = userData._id;
+
+    gallery = new Section({items: cards, renderer: (cardInfo) => {
+
+    const element = createCard(cardInfo)
 
     checkImgError(element);
 
     gallery.addItem(element);
-  }},galleryElement);
 
-gallery.renderItems();
+    }},galleryElement);
 
-const userInfo = new UserInfo('.profile__name', '.profile__bio', '.profile__picture');
-
-api.getUserInfo().then((res) => {
-  userInfo.setUserInfo(res.name, res.about)
-  userInfo.setUserAvatar(res.avatar);
-});
+    gallery.renderItems();
+  })
+  .catch((err) => console.log(`Ошибка ${err}`))
 
 const editPopupElement = new PopupWithForm(
   popupEdit,
   (inputs) => {
-    return api.editUserInfo(inputs.name, inputs.bio).then((res) => {
+    return api.editUserInfo(inputs.name, inputs.bio)
+      .then((res) => {
       userInfo.setUserInfo(res.name, res.about)
-    })
-    //editPopupElement.close();
+      })
+      .catch((err) => console.log(`Ошибка ${err}`))
   }
 );
 
 editPopupElement.setEventListeners();
-
-function createCard(cardInfo, userId, cardSelector, handleCardClick, handleCardDelete, handleLikeAdd, handleLikeDelete) {
-  return new Card(cardInfo, userId, cardSelector, handleCardClick, handleCardDelete, handleLikeAdd, handleLikeDelete).createCard();
-}
 
 function checkImgError(element) {
 
@@ -100,40 +122,11 @@ function checkImgError(element) {
   };
 }
 
-function handleLikeAdd(id, card) {
-  const elementLikeButton = card.querySelector('.gallery__like');
-  const elementLikeCount = card.querySelector('.gallery__like-count');
-
-  api.setLike(id).then((res) => {
-    elementLikeButton.classList.add('gallery__like_active');
-    elementLikeCount.textContent = res.likes.length;
-  })
-}
-
-function handleLikeDelete(id, card) {
-  const elementLikeButton = card.querySelector('.gallery__like');
-  const elementLikeCount = card.querySelector('.gallery__like-count');
-
-  api.deleteLike(id).then((res) => {
-    elementLikeButton.classList.remove('gallery__like_active');
-    elementLikeCount.textContent = res.likes.length;
-  })
-}
-
-function handleDelete(id, card) {
-  api.deleteCard(id).then(() => {deletePopupElement.close(); card.remove()})
-}
-
-function handleCardDelete(id, card) {
-  deletePopupElement.open()
-  deletePopupElement.delete(id, card)
-}
-
 function handleCardClick(name, link) {
   imagePopupElement.open(name, link);
 }
 
-const deletePopupElement = new PopupWithDelete(deletePopup, handleDelete);
+const deletePopupElement = new PopupWithDelete(deletePopup);
 
 deletePopupElement.setEventListeners()
 
@@ -142,9 +135,11 @@ const addPlacePopupElement = new PopupWithForm(
   async (inputs) => {
     let element;
 
-    await api.addNewCard(inputs.name, inputs.link).then((res) => {
-      element = createCard({name: res.name, link: res.link, likes: res.likes, owner: res.owner, _id: res._id}, userId, '#galleryCard', handleCardClick, handleCardDelete, handleLikeAdd, handleLikeDelete);
-    })
+    await api.addNewCard(inputs.name, inputs.link)
+      .then((res) => {
+      element = createCard({name: res.name, link: res.link, likes: res.likes, owner: res.owner, _id: res._id});
+      })
+      .catch((err) => console.log(`Ошибка ${err}`))
 
     checkImgError(element);
     gallery.addItem(element);
@@ -158,10 +153,12 @@ addPlacePopupElement.setEventListeners();
 const profilePopupElement = new PopupWithForm(
   profilePopup,
   (inputs) => {
-    return api.updateProfilePicture(inputs.link).then((res) => {
+    return api.updateProfilePicture(inputs.link)
+      .then((res) => {
       userInfo.setUserAvatar(res.avatar);
       profilePopupElement.close();
-    })
+      })
+      .catch((err) => console.log(`Ошибка ${err}`))
   }
 );
 
@@ -188,12 +185,15 @@ btnEdit.addEventListener('click', () => {
   nameInput.value = user.name;
   bioInput.value = user.bio;
 });
+
 btnCloseEditPopup.addEventListener('click',() => editPopupElement.close());
+
 btnAddPlace.addEventListener('click',() => {
   validatingForms.addPlaceForm.resetErrors();
 
   addPlacePopupElement.open();
 });
+
 btnCloseAddPopup.addEventListener('click',() => addPlacePopupElement.close());
 
 btnOpenProfile.addEventListener('click', () => {
@@ -204,6 +204,3 @@ btnOpenProfile.addEventListener('click', () => {
 
 btnCloseProfilePopup.addEventListener('click', () => profilePopupElement.close())
 
-popupList.forEach((popup) => {
-  new Popup(popup).setEventListeners()
-});
