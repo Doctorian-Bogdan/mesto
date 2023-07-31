@@ -130,23 +130,23 @@ const deletePopupElement = new PopupWithDelete(deletePopup);
 
 deletePopupElement.setEventListeners()
 
-const addPlacePopupElement = new PopupWithForm(
-  popupAddPlace,
-  async (inputs) => {
-    let element;
-
-    await api.addNewCard(inputs.name, inputs.link)
-      .then((res) => {
-      element = createCard({name: res.name, link: res.link, likes: res.likes, owner: res.owner, _id: res._id});
-      })
-      .catch((err) => console.log(`Ошибка ${err}`))
-
-    checkImgError(element);
-    gallery.addItem(element);
-
-    addPlacePopupElement.close();
-  }
-);
+const addPlacePopupElement = new PopupWithForm(popupAddPlace, (inputs) => {
+  return api
+    .addNewCard(inputs.name, inputs.link)
+    .then((res) => {
+      const element = createCard({
+        name: res.name,
+        link: res.link,
+        likes: res.likes,
+        owner: res.owner,
+        _id: res._id,
+      });
+      checkImgError(element);
+      gallery.addItem(element);
+      addPlacePopupElement.close();
+    })
+    .catch((err) => console.log(`Ошибка ${err}`));
+});
 
 addPlacePopupElement.setEventListeners();
 
@@ -186,21 +186,14 @@ btnEdit.addEventListener('click', () => {
   bioInput.value = user.bio;
 });
 
-btnCloseEditPopup.addEventListener('click',() => editPopupElement.close());
-
 btnAddPlace.addEventListener('click',() => {
   validatingForms.addPlaceForm.resetErrors();
 
   addPlacePopupElement.open();
 });
 
-btnCloseAddPopup.addEventListener('click',() => addPlacePopupElement.close());
-
 btnOpenProfile.addEventListener('click', () => {
   validatingForms.profileForm.resetErrors();
 
   profilePopupElement.open()
 });
-
-btnCloseProfilePopup.addEventListener('click', () => profilePopupElement.close())
-
